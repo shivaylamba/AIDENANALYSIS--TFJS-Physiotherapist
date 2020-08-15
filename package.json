@@ -1,0 +1,23 @@
+{
+  "name": "test-repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QEDK/test-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QEDK/test-repo/issues"
+  },
+  "homepage": "https://github.com/QEDK/test-repo#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

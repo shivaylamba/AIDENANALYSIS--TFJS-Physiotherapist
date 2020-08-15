@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <title>AIDEN</title>
+
+    <style>
+      div.scrollmenu {
+        background-color: rgb(201, 201, 201);
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      div.scrollmenu a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+      }
+
+      div.scrollmenu a:hover {
+        background-color: #777;
+      }
+
+      div.scrollmenu a:active {
+        background-color: #777;
+      }
+    </style>
+
+    <!-- FontAwesome -->
+    <script
+      src="https://kit.fontawesome.com/dbea95f351.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Tensorflow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+
+    <style>
+      .container {
+        max-width: 100%;
+      }
+
+      #ifr {
+        position: absolute;
+        float: left;
+        clear: both;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        left: no-repeat;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Heading -->
+    <iframe src="view2.html" id="ifr"></iframe>
+
+    <!-- Camera / Selector Split -->
+    <div class="container">
+      <div class="row" style="padding-top: 20px;">
+        <!-- Camera -->
+        <div class="col-8" id="Camera">
+          <canvas id="canvas" style="max-width: 100%;"></canvas>
+        </div>
+
+        <!-- Selector Split -->
+        <div class="col-4" id="Selector">
+          <!-- Card -->
+          <div class="card border-info mb-3" style="max-width: 18rem;">
+            <button
+              type="button"
+              class="btn btn-success btn-lg btn-block"
+              onclick="init(0)"
+            >
+              Start
+            </button>
+            <div class="card-body text-info">
+              <div id="label-container"></div>
+              <div style="display: none;" id="filler-label-container">
+                <div class="progress">
+                  <div
+                    class="progress-bar progress-bar-striped}"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                <div class="progress">
+                  <div
+                    class="progress-bar progress-bar-striped}"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                <div class="progress">
+                  <div
+                    class="progress-bar progress-bar-striped}"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                <div class="progress">
+                  <div
+                    class="progress-bar progress-bar-striped}"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="card-footer bg-transparent border-info text-info"
+              id="footer"
+            >
+              Status:
+            </div>
+
+            <div
+              class="card-footer bg-transparent border-info text-info"
+              id="speech"
+            >
+              <i style="color: black;">Say "begin exercises"</i>
+            </div>
+            <div id="sequence">
+              <!-- <div class="scrollmenu">
+                                <a href="#BackBend" id="stretch1" >Back Bend</a>
+                                <a href="#Lunge" id="stretch1" >Lunge Rotate</a>
+                                <a href="#calf" id="stretch3" >Calf Tense</a>
+                                <a href="#about" id="stretch4">Shoulder Relax</a>
+                                <a href="#support">Neck Soother</a>
+                                <a href="#blog">Ankle Rolling</a>
+                                <a href="#base">Chest Expand</a>
+                              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("sequence").innerHTML = `<div class="scrollmenu">
+    <a href="#BackBend" id="stretch1" >Back Bend</a>
+    <a href="#Lunge" id="stretch2" >Lunge Rotate</a>
+    <a href="#calf" id="stretch3" >Calf Tense</a>
+    <a href="#about" id="stretch4">Shoulder Relax</a>
+    <a href="#support">Neck Soother</a>
+    <a href="#blog">Ankle Rolling</a>
+    <a href="#base">Chest Expand</a>
+  </div>`;
+    </script>
+
+    <script
+      type="text/javascript"
+      src="https://www.botlibre.com/scripts/sdk.js"
+    ></script>
+    <script type="text/javascript">
+      SDK.applicationId = "3194419546458234738";
+      var sdk = new SDKConnection();
+      var web = new WebAvatar();
+      web.connection = sdk;
+      web.avatar = "792824";
+      web.voice = "cmu-bdl-hsmm";
+      web.voiceMod = "default";
+      web.nativeVoice = true;
+      web.nativeVoiceName = "Daniel";
+      web.width = "300";
+      web.createBox();
+      web.addMessage("Hello, my name is AIDEN. I'll be your physio assistant.");
+      web.processMessages();
+    </script>
+    <script src="./index.js"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
